@@ -1,0 +1,56 @@
+<?php
+    include "menu.php";
+    require "src/Livro.php";
+    require "src/LivroDAO.php";
+    require "funcoes.php";
+?>
+
+<h2>Cadastro De Livro</h2>
+<div>
+
+<?php 
+
+    $titulo = $_POST["titulo"];
+    $autor = $_POST["autor"];
+    $isbn = $_POST["isbn"];
+    $editora = $_POST["editora"];
+    $edicao = $_POST["edicao"];
+    $publicacao = $_POST["publicacao"];
+    $categoria = $_POST["categoria"];
+    $resumo = $_POST["resumo"];
+    $valor = $_POST["valor"];
+
+    if (isset($_POST["promocao"]))
+        $promocao = $_POST["promocao"];
+    else
+        $promocao = 0;
+
+    $imagem = pegarImagem($_FILES);
+
+    $livro = new Livro();
+    $livro->setTitulo($titulo);
+    $livro->setAutor($autor);
+    $livro->setIsbn($isbn);
+    $livro->setEditora($editora);
+    $livro->setEdicao($edicao);
+    $livro->setPublicacao($publicacao);
+    $livro->setCategoria($categoria);
+    $livro->setResumo($resumo);
+    $livro->setValor($valor);
+    $livro->setPromocao($promocao);
+    $livro->setImagem($imagem);
+
+    $livroDAO = new LivroDAO();   
+    $resp = $livroDAO->cadastrarLivro($livro);
+    
+    if ($resp > 0)
+        header("Location:form_lista_livros.php?mensagem=Livro cadastrado com sucesso!");
+    else
+        header("Location:form_lista_livros.php?mensagem=Erro no cadastro!");   
+?>
+
+</div>
+
+<?php
+    include "rodape.php";
+?>
